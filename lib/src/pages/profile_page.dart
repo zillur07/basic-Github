@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
@@ -7,7 +8,11 @@ class ProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Profile Page')),
-      body: const Center(child: Text('Welcome to the Profile Page!')),
+      body: Column(
+        children: [
+          SvgPicture.asset('images/svg/tourists.svg', width: 200, height: 200),
+        ],
+      ),
     );
   }
 }
