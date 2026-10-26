@@ -1,155 +1,218 @@
+// import 'package:flutter/material.dart';
+// import 'package:git_app_basic/src/app.dart';
+
+// void main() {
+//   runApp(App());
+// }
+
 import 'package:flutter/material.dart';
-import 'package:git_app_basic/src/app.dart';
 
 void main() {
-  runApp(App());
+  runApp(const MyApp());
 }
 
-// class MyApp extends StatefulWidget {
-//   const MyApp({super.key});
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
-//   @override
-//   State<MyApp> createState() => _MyAppState();
-// }
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Bottom Navigation App',
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        useMaterial3: true,
+      ),
+      home: const MainScreen(),
+    );
+  }
+}
 
-// class _MyAppState extends State<MyApp> {
-//   Color selectedColor = Colors.deepPurple;
+class MainScreen extends StatefulWidget {
+  const MainScreen({super.key});
 
-//   final List<Color> colors = [
-//     Colors.deepPurple,
-//     Colors.blue,
-//     Colors.green,
-//     Colors.red,
-//     Colors.orange,
-//     Colors.teal,
-//     Colors.pink,
-//   ];
+  @override
+  State<MainScreen> createState() => _MainScreenState();
+}
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       debugShowCheckedModeBanner: false,
+class _MainScreenState extends State<MainScreen> {
+  int selectedIndex = 0;
 
-//       theme: ThemeData(
-//         colorScheme: ColorScheme.fromSeed(seedColor: selectedColor),
-//         useMaterial3: true,
-//       ),
+  final List<Widget> pages = const [
+    HomePage(),
+    SearchPage(),
+    FavoritesPage(),
+    ProfilePage(),
+  ];
 
-//       home: HomePage(
-//         colors: colors,
-//         selectedColor: selectedColor,
-//         onColorChange: (color) {
-//           setState(() {
-//             selectedColor = color;
-//           });
-//         },
-//       ),
-//     );
-//   }
-// }
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: IndexedStack(index: selectedIndex, children: pages),
+      bottomNavigationBar: NavigationBar(
+        selectedIndex: selectedIndex,
+        onDestinationSelected: (index) {
+          setState(() {
+            selectedIndex = index;
+          });
+        },
+        backgroundColor: Colors.white,
+        indicatorColor: Colors.deepPurple.shade100,
+        destinations: const [
+          NavigationDestination(
+            icon: Icon(Icons.home_outlined),
+            selectedIcon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          NavigationDestination(icon: Icon(Icons.search), label: 'Search'),
+          NavigationDestination(
+            icon: Icon(Icons.favorite_border),
+            selectedIcon: Icon(Icons.favorite),
+            label: 'Favorites',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.person_outline),
+            selectedIcon: Icon(Icons.person),
+            label: 'Profile',
+          ),
+        ],
+      ),
+    );
+  }
+}
 
-// class HomePage extends StatelessWidget {
-//   final List<Color> colors;
-//   final Color selectedColor;
-//   final ValueChanged<Color> onColorChange;
+// Home Page
+class HomePage extends StatelessWidget {
+  const HomePage({super.key});
 
-//   const HomePage({
-//     super.key,
-//     required this.colors,
-//     required this.selectedColor,
-//     required this.onColorChange,
-//   });
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Home'),
+        backgroundColor: Colors.deepPurple,
+        foregroundColor: Colors.white,
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(
+              Icons.home_rounded,
+              size: 90,
+              color: Color.fromARGB(255, 186, 185, 187),
+            ),
+            const SizedBox(height: 16),
+            const Text(
+              'Welcome Home!',
+              style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'Explore your application',
+              style: TextStyle(color: Colors.grey.shade600),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(title: const Text('Theme Color App')),
+// Search Page
+class SearchPage extends StatelessWidget {
+  const SearchPage({super.key});
 
-//       // Drawer
-//       drawer: Drawer(
-//         child: Column(
-//           children: [
-//             DrawerHeader(
-//               child: Center(
-//                 child: Text(
-//                   'Choose Theme Color',
-//                   style: TextStyle(fontSize: 20),
-//                 ),
-//               ),
-//             ),
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Search')),
+      body: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          children: [
+            TextField(
+              decoration: InputDecoration(
+                hintText: 'Search here...',
+                prefixIcon: const Icon(Icons.search),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(16),
+                ),
+              ),
+            ),
+            const SizedBox(height: 30),
+            const Icon(Icons.manage_search, size: 80, color: Colors.deepPurple),
+            const Text('Find what you need', style: TextStyle(fontSize: 20)),
+          ],
+        ),
+      ),
+    );
+  }
+}
 
-//             Row(
-//               mainAxisAlignment: MainAxisAlignment.spaceAround,
-//               children: colors.map((color) {
-//                 return InkWell(
-//                   onTap: () {
-//                     onColorChange(color);
-//                     Navigator.pop(context);
-//                   },
-//                   child: CircleAvatar(
-//                     radius: 15,
-//                     backgroundColor: color,
-//                     child: selectedColor == color
-//                         ? Icon(Icons.check, color: Colors.white, size: 20)
-//                         : null,
-//                   ),
-//                 );
-//               }).toList(),
-//             ),
-//           ],
-//         ),
-//       ),
+// Favorites Page
+class FavoritesPage extends StatelessWidget {
+  const FavoritesPage({super.key});
 
-//       // Home Page
-//       body: Padding(
-//         padding: const EdgeInsets.all(20),
-//         child: Column(
-//           crossAxisAlignment: CrossAxisAlignment.start,
-//           children: [
-//             const Text(
-//               'Welcome to My App',
-//               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-//             ),
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Favorites')),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: const [
+            Icon(Icons.favorite_rounded, size: 90, color: Colors.redAccent),
+            SizedBox(height: 16),
+            Text(
+              'Your Favorites',
+              style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 8),
+            Text('Your favorite items will appear here.'),
+          ],
+        ),
+      ),
+    );
+  }
+}
 
-//             const SizedBox(height: 25),
+// Profile Page
+class ProfilePage extends StatelessWidget {
+  const ProfilePage({super.key});
 
-//             Card(
-//               child: ListTile(
-//                 leading: Icon(
-//                   Icons.palette,
-//                   color: Theme.of(context).colorScheme.primary,
-//                   size: 35,
-//                 ),
-//                 title: const Text('Theme Preview'),
-//                 subtitle: const Text('Your selected color is applied!'),
-//                 trailing: const Icon(Icons.arrow_forward_ios),
-//               ),
-//             ),
-
-//             const SizedBox(height: 20),
-
-//             SizedBox(
-//               width: double.infinity,
-//               child: ElevatedButton(
-//                 onPressed: () {},
-//                 child: const Text('Sample Button'),
-//               ),
-//             ),
-
-//             const SizedBox(height: 20),
-
-//             Text(
-//               'Selected Color: $selectedColor',
-//               style: const TextStyle(fontSize: 16),
-//             ),
-//           ],
-//         ),
-//       ),
-
-//       floatingActionButton: FloatingActionButton(
-//         onPressed: () {},
-//         child: const Icon(Icons.add),
-//       ),
-//     );
-//   }
-// }
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Profile')),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const CircleAvatar(
+              radius: 55,
+              backgroundColor: Colors.deepPurple,
+              child: Icon(Icons.person, size: 65, color: Colors.white),
+            ),
+            const SizedBox(height: 16),
+            const Text(
+              'Zillur Rahman',
+              style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'Flutter Developer',
+              style: TextStyle(color: Colors.grey.shade600),
+            ),
+            const SizedBox(height: 20),
+            FilledButton.icon(
+              onPressed: () {},
+              icon: const Icon(Icons.edit),
+              label: const Text('Edit Profile'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
