@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:git_app_basic/src/pages/home_page.dart';
-import 'package:git_app_basic/src/pages/profile_page.dart';
 
 class App extends StatefulWidget {
   const App({super.key});
@@ -28,16 +27,15 @@ class _AppState extends State<App> {
         useMaterial3: true,
         colorScheme: ColorScheme.fromSeed(seedColor: selectedColor),
       ),
-      // home: HomePage(
-      //   colors: colors,
-      //   selectedColor: selectedColor,
-      //   onColorChange: (color) {
-      //     setState(() {
-      //       selectedColor = color;
-      //     });
-      //   },
-      // ),
-      home: ProfilePage(),
+      home: HomePage(
+        colors: colors,
+        selectedColor: selectedColor,
+        onColorChange: (color) {
+          setState(() {
+            selectedColor = color;
+          });
+        },
+      ),
     );
   }
 }

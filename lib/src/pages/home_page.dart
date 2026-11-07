@@ -103,10 +103,6 @@ class HomePage extends StatelessWidget {
 
             const SizedBox(height: 20),
 
-            // Text(
-            //   'Selected Color: $selectedColor',
-            //   style: const TextStyle(fontSize: 16),
-            // ),
             ElevatedButton(
               onPressed: () {
                 Navigator.push(
